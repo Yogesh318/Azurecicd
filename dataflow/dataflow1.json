@@ -1,0 +1,40 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "inputfile",
+						"type": "DatasetReference"
+					},
+					"name": "landing"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "staging",
+						"type": "DatasetReference"
+					},
+					"name": "staging"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          {Make,Model,Type,Origin,DriveTrain,Length} as string",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: true,",
+				"     limit: 10,",
+				"     ignoreNoFilesFound: true) ~> landing",
+				"landing sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> staging"
+			]
+		}
+	}
+}
