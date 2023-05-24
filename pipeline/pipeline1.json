@@ -19,7 +19,8 @@
 						"referenceName": "customer_files",
 						"type": "DatasetReference",
 						"parameters": {
-							"job": "accn"
+							"job": "accn",
+							"customer": "mycustomer"
 						}
 					},
 					"fieldList": [
@@ -34,12 +35,6 @@
 						"type": "DelimitedTextReadSettings"
 					}
 				}
-			},
-			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [],
-				"userProperties": []
 			}
 		],
 		"annotations": []
