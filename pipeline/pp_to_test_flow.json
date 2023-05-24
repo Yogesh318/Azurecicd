@@ -21,13 +21,22 @@
 						"datasetParameters": {
 							"landing": {
 								"customer_name": "mycustomer",
-								"jobname": "accn.csv",
-								"file_name": "accn.csv"
+								"jobname": "pmt.csv",
+								"file_name": "pmt.csv"
 							},
 							"staging": {
 								"customername": "mycustomer",
-								"jobname": "accn.csv",
-								"filename": "accn.csv"
+								"jobname": "pmt.csv",
+								"filename": "pmt.csv"
+							}
+						},
+						"linkedServiceParameters": {
+							"staging": {
+								"schemaLinkedService": {
+									"customername": "mycustomer",
+									"jobname": "pmt.csv",
+									"filename": "pmt.csv"
+								}
 							}
 						}
 					},

@@ -3,85 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Get Metadata1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('Get Metadata1').output.childItems",
-						"type": "Expression"
-					},
-					"batchCount": 5,
-					"activities": [
-						{
-							"name": "dataflow1",
-							"type": "ExecuteDataFlow",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataflow": {
-									"referenceName": "dataflow1",
-									"type": "DataFlowReference",
-									"parameters": {
-										"filename": {
-											"value": "'@{item().name}'",
-											"type": "Expression"
-										}
-									},
-									"datasetParameters": {
-										"landing": {
-											"customer_name": "mycustomer",
-											"jobname": {
-												"value": "@item().itemName",
-												"type": "Expression"
-											}
-										},
-										"staging": {
-											"customername": "mycustomer",
-											"jobname": {
-												"value": "@item().itemName",
-												"type": "Expression"
-											},
-											"filename": {
-												"value": "@item().itemName",
-												"type": "Expression"
-											}
-										}
-									},
-									"linkedServiceParameters": {
-										"landing": {
-											"schemaLinkedService": {
-												"customer_name": "mycustomer"
-											}
-										}
-									}
-								},
-								"compute": {
-									"coreCount": 8,
-									"computeType": "General"
-								},
-								"traceLevel": "Fine"
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "Get Metadata1",
 				"type": "GetMetadata",
 				"dependsOn": [],
@@ -98,7 +19,7 @@
 						"referenceName": "customer_files",
 						"type": "DatasetReference",
 						"parameters": {
-							"customer": "mycustomer"
+							"job": "accn"
 						}
 					},
 					"fieldList": [
@@ -113,6 +34,12 @@
 						"type": "DelimitedTextReadSettings"
 					}
 				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": []
 			}
 		],
 		"annotations": []
