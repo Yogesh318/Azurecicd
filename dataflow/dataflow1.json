@@ -36,7 +36,8 @@
 				"     validateSchema: false,",
 				"     partitionFileNames:[($filename)],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> staging"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> staging"
 			]
 		}
 	}
