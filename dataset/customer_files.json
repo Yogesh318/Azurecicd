@@ -5,20 +5,12 @@
 			"referenceName": "AzureBlobStorage1",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"customer": {
-				"type": "String"
-			}
-		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": {
-					"value": "@dataset().customer",
-					"type": "Expression"
-				}
+				"container": "mycustomer"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
