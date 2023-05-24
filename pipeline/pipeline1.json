@@ -37,14 +37,16 @@
 								"dataflow": {
 									"referenceName": "dataflow1",
 									"type": "DataFlowReference",
+									"parameters": {
+										"filename": {
+											"value": "'@{item().name}'",
+											"type": "Expression"
+										}
+									},
 									"datasetParameters": {
 										"landing": {
 											"customer_name": "mycustomer",
 											"jobname": {
-												"value": "@item().itemName",
-												"type": "Expression"
-											},
-											"file_name": {
 												"value": "@item().itemName",
 												"type": "Expression"
 											}
@@ -58,6 +60,13 @@
 											"filename": {
 												"value": "@item().itemName",
 												"type": "Expression"
+											}
+										}
+									},
+									"linkedServiceParameters": {
+										"landing": {
+											"schemaLinkedService": {
+												"customer_name": "mycustomer"
 											}
 										}
 									}
@@ -97,6 +106,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
