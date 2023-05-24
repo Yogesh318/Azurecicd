@@ -15,10 +15,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": {
-					"value": "@dataset().job",
-					"type": "Expression"
-				},
 				"container": "mycustomer"
 			},
 			"columnDelimiter": ",",
@@ -26,11 +22,6 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"name": "Make,Model,Type,Origin,DriveTrain,Length",
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }
