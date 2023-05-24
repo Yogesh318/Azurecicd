@@ -8,6 +8,9 @@
 		"parameters": {
 			"job": {
 				"type": "String"
+			},
+			"customer": {
+				"type": "String"
 			}
 		},
 		"annotations": [],
@@ -19,7 +22,10 @@
 					"value": "@dataset().job",
 					"type": "Expression"
 				},
-				"container": "mycustomer"
+				"container": {
+					"value": "@dataset().customer",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
