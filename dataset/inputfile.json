@@ -12,9 +12,6 @@
 			},
 			"jobname": {
 				"type": "String"
-			},
-			"file_name": {
-				"type": "String"
 			}
 		},
 		"annotations": [],
@@ -22,10 +19,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": {
-					"value": "@dataset().file_name",
-					"type": "Expression"
-				},
 				"folderPath": {
 					"value": "@replace(dataset().jobname, '.csv', '')\n",
 					"type": "Expression"
@@ -40,11 +33,6 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": [
-			{
-				"name": "Make,Model,Type,Origin,DriveTrain,Length",
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }

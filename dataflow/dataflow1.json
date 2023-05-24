@@ -23,15 +23,17 @@
 			],
 			"transformations": [],
 			"scriptLines": [
-				"source(output(",
-				"          {Make,Model,Type,Origin,DriveTrain,Length} as string",
-				"     ),",
-				"     allowSchemaDrift: false,",
+				"parameters{",
+				"     filename as string",
+				"}",
+				"source(allowSchemaDrift: false,",
 				"     validateSchema: true,",
 				"     limit: 10,",
-				"     ignoreNoFilesFound: true) ~> landing",
+				"     ignoreNoFilesFound: true,",
+				"     wildcardPaths:[($filename)]) ~> landing",
 				"landing sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     partitionFileNames:[($filename)],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> staging"
 			]
