@@ -9,7 +9,14 @@
 						"referenceName": "ds_inputfile",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "landing"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_stageAsInput",
+						"type": "DatasetReference"
+					},
+					"name": "stageAsinput"
 				}
 			],
 			"sinks": [
@@ -19,6 +26,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "stage"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_synapse_basetable",
+						"type": "DatasetReference"
+					},
+					"name": "synapseTable"
 				}
 			],
 			"transformations": [],
@@ -29,12 +43,21 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     limit: 100,",
-				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 sink(allowSchemaDrift: true,",
+				"     ignoreNoFilesFound: false) ~> landing",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     moveFiles: [(concat('stg_',$tablename,'/')),(concat('archive/stage',$tablename,'.csv'))]) ~> stageAsinput",
+				"landing sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     filePattern:(concat('stg_',$tablename,'.csv')),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> stage"
+				"     skipDuplicateMapOutputs: true) ~> stage",
+				"stageAsinput sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     filePattern:(concat('out_',$tablename,'.csv')),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> synapseTable"
 			]
 		}
 	}
