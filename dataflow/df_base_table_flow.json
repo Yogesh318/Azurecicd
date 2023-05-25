@@ -34,7 +34,6 @@
 				"source1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     filePattern:(concat('stg_',$tablename,'.csv')),",
-				"     truncate: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> stage"
 			]
