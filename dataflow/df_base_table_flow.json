@@ -1,0 +1,39 @@
+{
+	"name": "df_base_table_flow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_inputfile",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "stage",
+						"type": "DatasetReference"
+					},
+					"name": "stage"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"parameters{",
+				"     tablename as string ($tablename)",
+				"}",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> stage"
+			]
+		}
+	}
+}
