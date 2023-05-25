@@ -5,19 +5,11 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "inputfile",
-						"type": "DatasetReference"
-					},
 					"name": "landing"
 				}
 			],
 			"sinks": [
 				{
-					"dataset": {
-						"referenceName": "staging",
-						"type": "DatasetReference"
-					},
 					"name": "staging"
 				}
 			],
@@ -29,7 +21,6 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     limit: 10,",
-				"     ignoreNoFilesFound: true,",
 				"     wildcardPaths:[($filename)],",
 				"     partitionBy('hash', 1)) ~> landing",
 				"landing sink(allowSchemaDrift: true,",
