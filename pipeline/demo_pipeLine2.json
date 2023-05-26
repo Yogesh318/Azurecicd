@@ -19,7 +19,7 @@
 						"referenceName": "customer_files",
 						"type": "DatasetReference",
 						"parameters": {
-							"customer": "mycustomer"
+							"customer": "input"
 						}
 					},
 					"fieldList": [
@@ -55,7 +55,7 @@
 					"batchCount": 10,
 					"activities": [
 						{
-							"name": "df_base_table_flow",
+							"name": "df_base_table_flow_4_demo2",
 							"type": "ExecuteDataFlow",
 							"dependsOn": [],
 							"policy": {
@@ -68,56 +68,8 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataflow": {
-									"referenceName": "df_base_table_flow",
-									"type": "DataFlowReference",
-									"parameters": {
-										"tablename": {
-											"value": "'@{item().Name}'",
-											"type": "Expression"
-										}
-									},
-									"datasetParameters": {
-										"landing": {
-											"customer": {
-												"value": "@pipeline().parameters.customer",
-												"type": "Expression"
-											},
-											"tablename": {
-												"value": "@item().Name",
-												"type": "Expression"
-											}
-										},
-										"stageAsinput": {
-											"customer": {
-												"value": "@pipeline().parameters.customer",
-												"type": "Expression"
-											},
-											"tablename": {
-												"value": "@item().Name",
-												"type": "Expression"
-											}
-										},
-										"stage": {
-											"customer": {
-												"value": "@pipeline().parameters.customer",
-												"type": "Expression"
-											},
-											"tablename": {
-												"value": "@item().Name",
-												"type": "Expression"
-											}
-										},
-										"synapseTable": {
-											"customer": {
-												"value": "@pipeline().parameters.customer",
-												"type": "Expression"
-											},
-											"tablename": {
-												"value": "@item().Name",
-												"type": "Expression"
-											}
-										}
-									}
+									"referenceName": "df_base_table_flow_4_demo2",
+									"type": "DataFlowReference"
 								},
 								"compute": {
 									"coreCount": 8,
