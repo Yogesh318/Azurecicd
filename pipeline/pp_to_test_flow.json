@@ -15,31 +15,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataflow": {
-						"referenceName": "dataflow1_copy1",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"landing": {
-								"customer_name": "mycustomer",
-								"jobname": "pmt.csv",
-								"file_name": "pmt.csv"
-							},
-							"staging": {
-								"customername": "mycustomer",
-								"jobname": "pmt.csv",
-								"filename": "pmt.csv"
-							}
-						},
-						"linkedServiceParameters": {
-							"staging": {
-								"schemaLinkedService": {
-									"customername": "mycustomer",
-									"jobname": "pmt.csv",
-									"filename": "pmt.csv"
-								}
-							}
-						}
-					},
 					"compute": {
 						"coreCount": 8,
 						"computeType": "General"
