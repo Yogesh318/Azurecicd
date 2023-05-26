@@ -1,0 +1,104 @@
+{
+	"name": "df_base_table_flow_4_demo2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_landing_demo2",
+						"type": "DatasetReference"
+					},
+					"name": "landing"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_staging_demo2",
+						"type": "DatasetReference"
+					},
+					"name": "stageAsinput"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_staging_demo2",
+						"type": "DatasetReference"
+					},
+					"name": "stage"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_sql_demo2",
+						"type": "DatasetReference"
+					},
+					"name": "synapseTable"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"parameters{",
+				"     tablename as string",
+				"}",
+				"source(output(",
+				"          Make as string,",
+				"          Model as string,",
+				"          Type as string,",
+				"          Origin as string,",
+				"          DriveTrain as string,",
+				"          Length as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     limit: 100,",
+				"     ignoreNoFilesFound: true) ~> landing",
+				"source(output(",
+				"          Make as string,",
+				"          Model as string,",
+				"          Type as string,",
+				"          Origin as string,",
+				"          DriveTrain as string,",
+				"          Length as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: true) ~> stageAsinput",
+				"landing sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Make as string,",
+				"          Model as string,",
+				"          Type as string,",
+				"          Origin as string,",
+				"          DriveTrain as string,",
+				"          Length as string",
+				"     ),",
+				"     filePattern:(concat('stg_',$tablename,'.csv')),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          {Make,Model,Type,Origin,DriveTrain,Length}",
+				"     )) ~> stage",
+				"stageAsinput sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Make as string,",
+				"          Model as string,",
+				"          Type as string,",
+				"          Origin as string,",
+				"          DriveTrain as string,",
+				"          Length as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     preSQLs:['truncate table dbo.accn;'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> synapseTable"
+			]
+		}
+	}
+}
