@@ -1,0 +1,19 @@
+{
+	"name": "ds_sql_demo2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ds_4_demo2"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "accn"
+		}
+	}
+}
