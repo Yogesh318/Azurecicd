@@ -313,6 +313,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat('out_',dataset().tablename,'.csv')",
+							"type": "Expression"
+						},
 						"folderPath": {
 							"value": "@concat('out_',dataset().tablename)",
 							"type": "Expression"
@@ -455,7 +459,7 @@
 						"     ignoreNoFilesFound: true) ~> landing",
 						"source(allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> stageAsinput",
+						"     ignoreNoFilesFound: true) ~> stageAsinput",
 						"landing sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     filePattern:(concat('stg_',$tablename,'.csv')),",
