@@ -13,7 +13,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "stg_accn.csv",
 				"folderPath": "stg_accn",
 				"container": "input"
 			},
