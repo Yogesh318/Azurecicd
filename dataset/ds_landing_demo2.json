@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "cars.csv",
+				"fileName": "accn.csv",
 				"folderPath": "accn",
 				"container": "input"
 			},
