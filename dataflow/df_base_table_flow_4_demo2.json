@@ -73,7 +73,7 @@
 				"          DriveTrain as string,",
 				"          Length as string",
 				"     ),",
-				"     filePattern:(\"accn.csv\"),",
+				"     filePattern:(\"stg_accn.csv\"),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
