@@ -259,6 +259,168 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_landing_demo2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "ds_4_demo2"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "accn.csv",
+						"folderPath": "accn",
+						"container": "input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Make",
+						"type": "String"
+					},
+					{
+						"name": "Model",
+						"type": "String"
+					},
+					{
+						"name": "Type",
+						"type": "String"
+					},
+					{
+						"name": "Origin",
+						"type": "String"
+					},
+					{
+						"name": "DriveTrain",
+						"type": "String"
+					},
+					{
+						"name": "Length",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_sql_demo2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_sql",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "ds_4_demo2"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Make",
+						"type": "varchar"
+					},
+					{
+						"name": "Model",
+						"type": "varchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Origin",
+						"type": "varchar"
+					},
+					{
+						"name": "DriveTrain",
+						"type": "varchar"
+					},
+					{
+						"name": "Length",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "accn"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_sql')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_staging_demo2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "ds_4_demo2"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "stg_accn",
+						"container": "input"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Make",
+						"type": "String"
+					},
+					{
+						"name": "Model",
+						"type": "String"
+					},
+					{
+						"name": "Type",
+						"type": "String"
+					},
+					{
+						"name": "Origin",
+						"type": "String"
+					},
+					{
+						"name": "DriveTrain",
+						"type": "String"
+					},
+					{
+						"name": "Length",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/df_base_table_flow')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -327,6 +489,193 @@
 				"[concat(variables('factoryId'), '/datasets/ds_stageAsInput')]",
 				"[concat(variables('factoryId'), '/datasets/stage')]",
 				"[concat(variables('factoryId'), '/datasets/ds_synapse_basetable')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_base_table_flow_4_demo2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_landing_demo2",
+								"type": "DatasetReference"
+							},
+							"name": "landing"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_staging_demo2",
+								"type": "DatasetReference"
+							},
+							"name": "stageAsinput"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_staging_demo2",
+								"type": "DatasetReference"
+							},
+							"name": "stage"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_sql_demo2",
+								"type": "DatasetReference"
+							},
+							"name": "synapseTable"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"parameters{",
+						"     tablename as string",
+						"}",
+						"source(output(",
+						"          Make as string,",
+						"          Model as string,",
+						"          Type as string,",
+						"          Origin as string,",
+						"          DriveTrain as string,",
+						"          Length as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     limit: 100,",
+						"     ignoreNoFilesFound: true) ~> landing",
+						"source(output(",
+						"          Make as string,",
+						"          Model as string,",
+						"          Type as string,",
+						"          Origin as string,",
+						"          DriveTrain as string,",
+						"          Length as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: true) ~> stageAsinput",
+						"landing sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Make as string,",
+						"          Model as string,",
+						"          Type as string,",
+						"          Origin as string,",
+						"          DriveTrain as string,",
+						"          Length as string",
+						"     ),",
+						"     filePattern:(\"stg_accn.csv\"),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     mapColumn(",
+						"          Make,",
+						"          Model,",
+						"          Type,",
+						"          Origin,",
+						"          DriveTrain,",
+						"          Length",
+						"     )) ~> stage",
+						"stageAsinput sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Make as string,",
+						"          Model as string,",
+						"          Type as string,",
+						"          Origin as string,",
+						"          DriveTrain as string,",
+						"          Length as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Make,",
+						"          Model,",
+						"          Type,",
+						"          Origin,",
+						"          DriveTrain,",
+						"          Length",
+						"     )) ~> synapseTable"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_landing_demo2')]",
+				"[concat(variables('factoryId'), '/datasets/ds_staging_demo2')]",
+				"[concat(variables('factoryId'), '/datasets/ds_sql_demo2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/temp_dataflow')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_staging_demo2",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_sql_demo2",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          Make as string,",
+						"          Model as string,",
+						"          Type as string,",
+						"          Origin as string,",
+						"          DriveTrain as string,",
+						"          Length as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Make as string,",
+						"          Model as string,",
+						"          Type as string,",
+						"          Origin as string,",
+						"          DriveTrain as string,",
+						"          Length as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_staging_demo2')]",
+				"[concat(variables('factoryId'), '/datasets/ds_sql_demo2')]"
 			]
 		},
 		{
@@ -478,6 +827,169 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/customer_files')]",
 				"[concat(variables('factoryId'), '/dataflows/df_base_table_flow')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/demo_pipeLine2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "customer_files",
+								"type": "DatasetReference",
+								"parameters": {
+									"customer": "input"
+								}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childItems",
+								"type": "Expression"
+							},
+							"batchCount": 10,
+							"activities": [
+								{
+									"name": "df_base_table_flow_4_demo2",
+									"type": "ExecuteDataFlow",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataflow": {
+											"referenceName": "df_base_table_flow_4_demo2",
+											"type": "DataFlowReference",
+											"parameters": {
+												"tablename": {
+													"value": "'@{item().Name}'",
+													"type": "Expression"
+												}
+											},
+											"datasetParameters": {
+												"landing": {},
+												"stageAsinput": {},
+												"stage": {},
+												"synapseTable": {}
+											},
+											"linkedServiceParameters": {}
+										},
+										"staging": {},
+										"compute": {
+											"coreCount": 8,
+											"computeType": "General"
+										},
+										"traceLevel": "Fine"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"customer": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/customer_files')]",
+				"[concat(variables('factoryId'), '/dataflows/df_base_table_flow_4_demo2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/temp_pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "temp_dataflow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "temp_dataflow",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/temp_dataflow')]"
 			]
 		}
 	]
