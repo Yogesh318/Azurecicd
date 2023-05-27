@@ -73,7 +73,7 @@
 				"          DriveTrain as string,",
 				"          Length as string",
 				"     ),",
-				"     filePattern:(concat('stg_',$tablename,'.csv')),",
+				"     filePattern:(\"accn.csv\"),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
@@ -101,7 +101,15 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> synapseTable"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Make,",
+				"          Model,",
+				"          Type,",
+				"          Origin,",
+				"          DriveTrain,",
+				"          Length",
+				"     )) ~> synapseTable"
 			]
 		}
 	}

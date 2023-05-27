@@ -69,7 +69,13 @@
 							"typeProperties": {
 								"dataflow": {
 									"referenceName": "df_base_table_flow_4_demo2",
-									"type": "DataFlowReference"
+									"type": "DataFlowReference",
+									"parameters": {
+										"tablename": {
+											"value": "'@{item().Name}'",
+											"type": "Expression"
+										}
+									}
 								},
 								"compute": {
 									"coreCount": 8,
