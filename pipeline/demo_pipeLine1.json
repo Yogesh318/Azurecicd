@@ -107,20 +107,14 @@
 												"type": "Expression"
 											}
 										},
-										"synapseTable": {
-											"customer": {
-												"value": "@pipeline().parameters.customer",
-												"type": "Expression"
-											},
-											"tablename": {
-												"value": "@item().Name",
-												"type": "Expression"
-											}
+										"finalbase": {
+											"customer": "@pipeline().parameters.customer",
+											"tablename": "@item().Name"
 										}
 									}
 								},
 								"compute": {
-									"coreCount": 8,
+									"coreCount": 16,
 									"computeType": "General"
 								},
 								"traceLevel": "Fine"
