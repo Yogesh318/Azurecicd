@@ -32,7 +32,7 @@
 						"referenceName": "ds_synapse_basetable",
 						"type": "DatasetReference"
 					},
-					"name": "synapseTable"
+					"name": "finalbase"
 				}
 			],
 			"transformations": [],
@@ -56,7 +56,7 @@
 				"     validateSchema: false,",
 				"     filePattern:(concat('out_',$tablename,'.csv')),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> synapseTable"
+				"     skipDuplicateMapOutputs: true) ~> finalbase"
 			]
 		}
 	}
